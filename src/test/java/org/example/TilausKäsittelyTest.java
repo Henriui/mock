@@ -6,20 +6,19 @@ import static org.junit.Assert.assertEquals;
 
 public class TilausKäsittelyTest {
   @Test
-  public void testaaKäsittelijäWithFakeHinnoittelija() {
-    // Arrange
-    float saldoAlku = 100.0f;
-    float Hinta = 30.0f;
+  public void testaaFakeHinnoittelija() {
+    float alkuSaldo = 100.0f;
+    float hinta = 30.0f;
     float alennus = 20.0f;
-    float saldoLop = saldoAlku - (Hinta * (1 - alennus / 100));
-    Asiakas asiakas = new Asiakas(saldoAlku);
-    Tuote tuote = new Tuote("Testaus", Hinta);
-    IHinnoittelija hinnoittelija = new mockHinnoittelija(alennus);
-    // Act
+    float saldo = alkuSaldo - (hinta * (1 - alennus / 100));
+
+    Asiakas asiakas = new Asiakas(alkuSaldo);
+    Tuote tuote = new Tuote("Testaus", hinta);
+    IHinnoittelija hinnoittelija = new FakeHinnoittelija(alennus);
     TilaustenKäsittely käsittelijä = new TilaustenKäsittely();
     käsittelijä.setHinnoittelija(hinnoittelija);
+
     käsittelijä.käsittele(new Tilaus(asiakas, tuote));
-    // Assert
-    assertEquals(saldoLop, asiakas.getSaldo(), 0.001);
+    assertEquals(saldo, asiakas.getSaldo(), 0.001);
   }
 }
